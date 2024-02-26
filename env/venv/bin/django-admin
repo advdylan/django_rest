@@ -1,4 +1,4 @@
-#!/home/dylan/django_rest/env/venv/bin/python3.10
+#!/home/dylan/django_rest/env/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
