@@ -30,19 +30,32 @@ class ProductDetailAPIView(generics.RetrieveAPIView):
 product_detail_view = ProductDetailAPIView.as_view()
     #lookup_field = pk
 
-class ProductListlAPIView(generics.ListAPIView):
+class ProductUpdateAPIView(generics.UpdateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    lookup_field = 'pk'
+    def perfom_update(self, serializer):
+        instance = serializer.save()
+        if not instance.content:
+            instance.content = instance.title
 
-product_detail_view = ProductListlAPIView.as_view()
 
+
+
+product_update_view = ProductUpdateAPIView.as_view()
+
+
+
+"""""
 @api_view(['GET', 'POST'])
 def product_alt_view(request,pk=None,*args, **kwargs):
     method = request.method
 
     if method == "GET":
         if pk is not None:
-            return Response()
+            obj = get_object_or_404(Product, pk=pk)
+            data = ProductSerializer(obj, many=False).data
+            return Response(data)
         
         queryset = Product.objects.all()
         data = ProductSerializer(queryset, many=True).data
@@ -53,9 +66,13 @@ def product_alt_view(request,pk=None,*args, **kwargs):
     if method == "POST":
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid(raise_exception=True):
-            #instance = serializer.save()
-            #instance = form.save()
-            print(serializer.data)
-        
+            #print(serializer.validated_data)
+            title = serializer.validated_data.get('title')
+            content = serializer.validated_data.get('content') or None
+            if content is None:
+                content = title
+                serializer.save(content=content)
+            
             return Response(serializer.data)
         return Response({'invalid': 'not good data'}, status= 400)
+        """
