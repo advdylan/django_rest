@@ -1,4 +1,4 @@
-from rest_framework import generics
+from rest_framework import generics, mixins, permissions
 
 from .models import Product
 from .serializers import ProductSerializer
@@ -9,6 +9,7 @@ from django.shortcuts import get_object_or_404
 class ProductListCreateAPIView(generics.ListCreateAPIView):
     queryset = Product.objects.all()
     serializer_class = ProductSerializer
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
 
     def perform_create(self, serializer):
         #serializer.save(user=self.request.user)
@@ -49,6 +50,30 @@ class ProductDestroyAPIView(generics.DestroyAPIView):
         super().perform_destroy(instance)
 
 product_delete_view = ProductDestroyAPIView.as_view()
+
+
+class ProductMixinView(
+    mixins.CreateModelMixin,
+    mixins.ListModelMixin,
+    mixins.RetrieveModelMixin,
+    generics.GenericAPIView
+    ):
+    queryset = Product.objects.all()
+    serializer_class = ProductSerializer
+    lookup_field = 'pk'
+
+    def get(self,request, *args, **kwargs):
+        print(args, kwargs)
+        pk = kwargs.get('pk')
+        if pk is not None:
+            return self.retrieve(request, *args, **kwargs)
+        return self.list(request, *args, **kwargs)
+    
+    def post(self, request, *args,**kwargs):
+        return self.create(request, *args, **kwargs)
+    #def post()
+
+product_mixin_view = ProductMixinView.as_view()
 
 
 
