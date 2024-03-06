@@ -11,6 +11,7 @@ from api.authentication import TokenAuthentication
 
 
 class ProductListCreateAPIView(
+    
     StaffEditorPermissionMixin,
     generics.ListCreateAPIView):
 
