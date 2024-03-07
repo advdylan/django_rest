@@ -1,5 +1,5 @@
 from rest_framework import authentication, generics, mixins, permissions
-from api.mixins import StaffEditorPermissionMixin
+from api.mixins import StaffEditorPermissionMixin, UserQuerySetMixin
 
 from .models import Product
 from .serializers import ProductSerializer
@@ -11,7 +11,7 @@ from api.authentication import TokenAuthentication
 
 
 class ProductListCreateAPIView(
-    
+    UserQuerySetMixin,
     StaffEditorPermissionMixin,
     generics.ListCreateAPIView):
 
@@ -31,11 +31,11 @@ class ProductListCreateAPIView(
         
         serializer.save(user = self.request.user, content=content)
 
-    def get_queryset(self, *args,**kwargs):
-        qs = super().get_queryset()
-        request = self.request
-        #print(request.user)
-        return qs.filter(user=request.user) 
+    # def get_queryset(self, *args,**kwargs):
+    #     qs = super().get_queryset()
+    #     request = self.request
+    #     #print(request.user)
+    #     return qs.filter(user=request.user) 
 
 product_list_create_view = ProductListCreateAPIView.as_view()
 
