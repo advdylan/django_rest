@@ -12,17 +12,18 @@ class ProductSerializer(serializers.ModelSerializer):
         lookup_field = 'pk'
         )
     title = serializers.CharField(validators=[validators.validate_title_no_hello, validators.unique_product_title])
+
     #name = serializers.CharField(source='title', read_only=True)
 
     
     class Meta:
         model = Product
         fields = [
+            #'user',
             'url',
             'edit_url',
             'pk',
             'title',
-            'name',
             'content',
             'price',
             'sale_price',
