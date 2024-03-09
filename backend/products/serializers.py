@@ -24,7 +24,6 @@ class ProductSerializer(serializers.ModelSerializer):
         lookup_field = 'pk'
         )
     title = serializers.CharField(validators=[validators.validate_title_no_hello, validators.unique_product_title])
-    public = serializers.BooleanField()
 
     #name = serializers.CharField(source='title', read_only=True)
 
