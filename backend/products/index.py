@@ -13,4 +13,5 @@ class ProductIndex(AlgoliaIndex):
         'price',
         'public'
     ]
+    tags = 'get_tags_list'
 #algoliasearch.register(Product)
