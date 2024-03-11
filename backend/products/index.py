@@ -11,11 +11,12 @@ class ProductIndex(AlgoliaIndex):
         'title',
         'content',
         'price',
-        'public'
+        'public',
+        'user'
     ]
     settings = {
         'searchableAttributes': ['title', 'content'],
-        'attributesForFaceting': ['user', 'public' ]
+        'attributesForFaceting': ['user', 'public']
     }
     tags = 'get_tags_list'
 #algoliasearch.register(Product)
