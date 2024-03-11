@@ -24,4 +24,5 @@ def perform_search(query, **kwargs):
     if len(index_filters) != 0:
          params['facetFilters'] = index_filters
     results = index.search(query, params)
+    print(params)
     return results

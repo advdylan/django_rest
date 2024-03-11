@@ -14,6 +14,7 @@ class SearchListView(generics.GenericAPIView):
         query = request.GET.get('q')
         public = str(request.GET.get('public')) != "0"
         tag = request.GET.get('tag') or None
+        print(f"User: {user},Query:  {query}, Public: {public}, Tag:  {tag}")
         if not query:
             print("EMPTY QUERY")
             return Response('', status=400)
