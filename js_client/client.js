@@ -23,13 +23,15 @@ function handleLogin(event){
     
     fetch(loginEndpoint, options) // Promise
     .then(response =>{ //functions on promise
-        console.log(response)
         return response.json()
     })
-    .then (x =>{
-        console.log(x)
-    })
+    .then(handleAuthData)
     .catch(err=> {
         console.log('err', err)
     })
+}
+
+function handleAuthData(dupa) {
+    localStorage.setItem('access', dupa.access) // key -> value pair
+    localStorage.setItem('refresh', dupa.refresh)
 }
