@@ -1,9 +1,14 @@
 const loginForm = document.getElementById('login-form')
+const searchForm = document.getElementById('search-form')
 const baseEndpoint = "http://localhost:8000/api"
 const contentContainer = document.getElementById('content-container')
 if (loginForm) {
     // handle this login form
     loginForm.addEventListener('submit', handleLogin )
+} 
+if (searchForm) {
+    // handle this login form
+    searchForm.addEventListener('submit', handleSearch )
 } 
 
 function handleLogin(event){
@@ -28,6 +33,40 @@ function handleLogin(event){
     })
     .then(authData =>{
         handleAuthData(authData, getProductlist)
+    })
+    .catch(err=> {
+        console.log('err', err)
+    })
+}
+
+function handleSearch(event){
+    event.preventDefault()
+
+    let formData = new FormData(searchForm)
+    let data = Object.fromEntries(formData)
+    let searchParams = new URLSearchParams(data)
+
+
+    const endpoint = `${baseEndpoint}/search/?${searchParams}`
+
+    //console.log(loginObjectData)
+    //console.log(loginObjectData['username'], loginObjectData['password'])
+    const options = {
+        method: "GET",
+        headers: {
+            "Content-Type": "application/json",
+            "Authorization": "Bearer tasdff"
+
+        }
+    }
+    
+    fetch(endpoint, options) // Promise
+    .then(response =>{ //functions on promise
+        return response.json()
+    })
+    .then(data =>{
+        console.log(data.hits)
+        writeToContainer(data)
     })
     .catch(err=> {
         console.log('err', err)
@@ -84,5 +123,7 @@ function getProductlist() {
         }
     })
 }
+
+
 
 getProductlist()
