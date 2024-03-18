@@ -107,6 +107,26 @@ function isTokenNotValid(jsonData) {
     return true
 }
 
+function validateJWTToken() {
+    //fetch
+    const endpoint = `${baseEndpoint}/token/verify/`
+    const options = {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            token: localStorage.getItem('access')
+        })
+    }
+
+    fetch(endpoint, options)
+    .then(response=>response.json())
+    .then(x=>{
+        //refresh token
+    })
+}
+
 function getProductlist() {
     const endpoint = `${baseEndpoint}/products/`
     const options = getFetchOptions()
@@ -125,5 +145,5 @@ function getProductlist() {
 }
 
 
-
+validateJWTToken()
 getProductlist()
